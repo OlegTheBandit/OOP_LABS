@@ -22,12 +22,12 @@ fun main()
     shapes.forEach{sumArea+=it.calcArea()}
     println("Суммарная площадь всех фигур равн: $sumArea")
     print("Фигура с максимальнйо площадью - ")
-    shapes.maxBy (Shape::calcArea)!!.printFigureInfo().toString()
+    println(shapes.maxBy (Shape::calcArea).toString())
     print("Фигура с минимальной площадью - ")
-    shapes.minBy (Shape::calcArea)!!.printFigureInfo()
+    println(shapes.minBy (Shape::calcArea).toString())
     print("Фигура с максимальным периметром - ")
-    shapes.maxBy (Shape::calcPerimeter)!!.printFigureInfo()
+    println(shapes.maxBy (Shape::calcPerimeter).toString())
     print("Фигура с минимальным периметром - ")
-    shapes.minBy (Shape::calcPerimeter)!!.printFigureInfo()
+    println(shapes.minBy (Shape::calcPerimeter).toString())
 
 }

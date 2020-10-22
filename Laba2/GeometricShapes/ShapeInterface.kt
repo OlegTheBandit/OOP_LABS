@@ -1,5 +1,5 @@
 interface Shape {
     fun calcArea(): Double
     fun calcPerimeter(): Double
-    fun printFigureInfo()
+    override fun toString(): String
 }
