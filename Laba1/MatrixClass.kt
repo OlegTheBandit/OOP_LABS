@@ -1,96 +1,59 @@
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.util.*
 import kotlin.math.abs
 import kotlin.io.readLine as readLine
 
-class Matrix(_rows: Int, _columns: Int) {
-    private var rows: Int
-    private var columns: Int
-    private var matrix: Array<Array<Double>>
+class Matrix(private var matrix: Array<Array<Double>>) {
+    private var rows: Int = matrix.size
+    private var columns: Int = matrix[0].size
 
-    // Конструктор (явный)
-    init {
-        rows = _rows
-        columns = _columns
-        if(rows <= 0 || columns <= 0)
-        {
-            throw Exception("Заданы неверные размеры матрицы")
+    init{
+        for(i in 0..matrix.size-1){
+            if(matrix[0].size != matrix[i].size)
+                throw IllegalStateException("This is not matrix.")
         }
-        matrix = Array(rows, {Array(columns, {0.0})})
     }
-
     //Взятие числа строк матрицы
-    fun getRows() : Int
-    {
+    fun getRows() : Int {
         return this.rows
     }
 
     //Взятие числа колонок матрицы
-    fun getColumns() : Int
-    {
+    fun getColumns() : Int {
         return this.columns
     }
 
     //Взятие элемента матрицы по значению строка+столбец
-    fun getNumber( row:Int, column:Int ) : Double
-    {
+    fun getNumber( row:Int, column:Int ) : Double {
         return this.matrix[row][column]
     }
 
-    //Заполнение матрицы пользователем
-    fun fill()
-    {
-        for(i in (0..this.rows-1)) {
-            for(j in 0..(this.columns-1)) {
-                print("Элемент ${i+1}-ой строки ${j+1}-го столбца равен: ")
-                this.matrix[i][j] =  readLine()!!.toDouble()
-            }
-        }
-    }
-
     //Заполнение элемента матрицы по стороке/столбцу
-    fun setNumber(number:Double, row: Int, column: Int)
-    {
+    fun setNumber(number:Double, row: Int, column: Int) {
             this.matrix[row][column] =  number
     }
 
     //Сравнение размеров матриц
-    fun matrixSizeCompare(matrix1: Matrix,  matrix2: Matrix): Boolean
-    {
-        if(matrix1.getRows() != matrix2.getRows() || matrix1.getColumns() != matrix2.getColumns())
-        {
-            return false
-        }
-        return true
+    fun matrixSizeCompare(matrix1: Matrix,  matrix2: Matrix): Boolean {
+            return !(matrix1.getRows() != matrix2.getRows() || matrix1.getColumns() != matrix2.getColumns())
     }
 
     //Проверка матрицы на квадратность
-    fun matrixIsSquare(): Boolean
-    {
-        if(this.getRows()==this.getColumns())
-        {
-            return true
-        }
-        return false
+    fun matrixIsSquare(): Boolean {
+            return this.getRows()==this.getColumns()
     }
 
 
     //Проверка для умножения
-    fun multiplyCheck(matrix1: Matrix, matrix2: Matrix): Boolean
-    {
-        if(matrix1.getRows() == matrix2.getColumns())
-        {
-            return true
-        }
-        return false;
+    fun multiplyCheck(matrix1: Matrix, matrix2: Matrix): Boolean {
+            return matrix1.getColumns() == matrix2.getRows()
     }
 
     //Сложение матриц
-    fun sumMatrix(matrix1: Matrix,  matrix2: Matrix): Matrix
-    {
-        if(matrixSizeCompare(matrix1, matrix2))
-        {
-            val newMatrix = Matrix(matrix1.getRows(), matrix2.getColumns())
-
+    fun sumMatrix(matrix1: Matrix,  matrix2: Matrix): Matrix {
+        if(matrixSizeCompare(matrix1, matrix2)) {
+            val newMatrix = Matrix(Array(matrix1.getRows(),{ Array(matrix1.getColumns(),{0.0})}))
             for(i in (0..this.rows-1)) {
                 for(j in 0..(this.columns-1)) {
                     newMatrix.setNumber(matrix1.getNumber(i,j)+matrix2.getNumber(i,j), i, j)
@@ -101,16 +64,15 @@ class Matrix(_rows: Int, _columns: Int) {
         }
         else
         {
-            throw Exception("Размеры матриц не совпадают")
+            throw IllegalStateException("Matrix sizes are not equal")
         }
     }
 
     //Вычитание матриц
-    fun subtractionMatrix(matrix1: Matrix,  matrix2: Matrix): Matrix
-    {
+    fun subtractionMatrix(matrix1: Matrix,  matrix2: Matrix): Matrix {
         if(matrixSizeCompare(matrix1, matrix2))
         {
-            val newMatrix = Matrix(matrix1.getRows(), matrix2.getColumns())
+            val newMatrix = Matrix(Array(matrix1.getRows(),{ Array(matrix1.getColumns(), {0.0}) }))
 
             for(i in (0..this.rows-1)) {
                 for(j in 0..(this.columns-1)) {
@@ -122,22 +84,20 @@ class Matrix(_rows: Int, _columns: Int) {
         }
         else
         {
-            throw Exception("Размеры матриц не совпадают")
+            throw IllegalStateException("Matrix sizes are not equal")
         }
     }
 
     //Перемножение матриц
-    fun multiplyMatrix(matrix1: Matrix, matrix2: Matrix) : Matrix
-    {
+    fun multiplyMatrix(matrix1: Matrix, matrix2: Matrix) : Matrix {
         if(multiplyCheck(matrix1,matrix2)){
-            val newMatrix = Matrix(matrix1.getRows(), matrix2.getColumns())
+            val newMatrix = Matrix(Array(matrix1.getRows(),{ Array(matrix2.getColumns(), {0.0}) }))
 
             for(i in (0..newMatrix.getRows()-1)) {
                 for(j in 0..newMatrix.getColumns()-1) {
                     newMatrix.setNumber(0.0,i,j)
 
-                    for(k in 0..matrix1.getColumns()-1)
-                    {
+                    for(k in 0..matrix1.getColumns()-1) {
                         newMatrix.setNumber(newMatrix.getNumber(i,j)+matrix1.getNumber(i,k) * matrix2.getNumber(k,j),i,j)
                     }
                 }
@@ -146,7 +106,7 @@ class Matrix(_rows: Int, _columns: Int) {
         }
         else
         {
-            throw Exception("Матрицы нельзя перемножить")
+            throw IllegalStateException("Matrix sizes are not equal")
         }
     }
 
@@ -160,19 +120,24 @@ class Matrix(_rows: Int, _columns: Int) {
         }
     }
 
-    fun IsEqual(matrix: Matrix): Boolean
-     {
-        if(!matrixSizeCompare(this, matrix)){
+
+
+    override fun equals(other: Any?): Boolean {
+        if(this === other)
+            return true
+        if(other !is Matrix)
+            return false
+        else{
+            if(this.getRows() != other.getRows() || this.getColumns() != other.getColumns())
+                return false
+            for(i in 0..this.getRows()-1)
+                for(j in 0..this.getColumns()-1)
+                    if(this.getNumber(i,j) != other.getNumber(i,j))
+                        return false
             return false
         }
-        for(i in 0..this.getRows()-1){
-            for(j in 0..this.getColumns()-1){
-                if(this.getNumber(i,j) != matrix.getNumber(i,j))
-                    return false
-            }
-        }
-        return true
     }
+
 
     val EPS: Double = 1E-9;
 
@@ -218,9 +183,10 @@ class Matrix(_rows: Int, _columns: Int) {
             return determinant
         }
         else{
-            throw Exception("Матрицы не квадратная")
+            throw IllegalArgumentException("Matrix is not square")
         }
     }
+
 
     // Вывод матрицы в консоль
     fun printMatrix()
@@ -233,8 +199,25 @@ class Matrix(_rows: Int, _columns: Int) {
         }
     }
 
+    override fun hashCode(): Int {
+        var result = matrix.contentDeepHashCode()
+        result = 31 * result + rows
+        result = 31 * result + columns
+        result = 31 * result + EPS.hashCode()
+        return result
+    }
 
+    override fun toString(): String {
+        var outString: String = ""
 
+        for (i in (0..this.rows - 1)) {
+            for (j in 0..(this.columns - 1)) {
+                outString += "${matrix[i][j]} "
+            }
+            outString += "\n"
+        }
+        return outString
+    }
 
 
 }
