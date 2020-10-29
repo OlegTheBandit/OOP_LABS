@@ -187,18 +187,6 @@ class Matrix(private var matrix: Array<Array<Double>>) {
         }
     }
 
-
-    // Вывод матрицы в консоль
-    fun printMatrix()
-    {
-        for(i in (0..this.rows-1)) {
-            for(j in 0..(this.columns-1)) {
-                print("${matrix[i][j]} ")
-            }
-            print("\n")
-        }
-    }
-
     override fun hashCode(): Int {
         var result = matrix.contentDeepHashCode()
         result = 31 * result + rows
