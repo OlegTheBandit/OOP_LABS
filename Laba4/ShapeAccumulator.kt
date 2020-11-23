@@ -9,44 +9,44 @@ class ShapeAccumulator {
         collection.forEach(){shapes.add(it)}
     }
 
-    fun getMaxAreaShape() : Shape {
+    fun getMaxAreaShape() : Shape? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.maxBy(Shape::calcArea)!!
     }
 
-    fun getMinAreaShape() : Shape {
+    fun getMinAreaShape() : Shape? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.minBy(Shape::calcArea)!!
     }
 
-    fun getMaxPerimeterShape() : Shape {
+    fun getMaxPerimeterShape() : Shape? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.maxBy(Shape::calcPerimeter)!!
     }
 
-    fun getMinPerimeterShape() : Shape {
+    fun getMinPerimeterShape() : Shape? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.minBy(Shape::calcPerimeter)!!
     }
 
-    fun getTotalArea() : Double {
+    fun getTotalArea() : Double? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.sumByDouble { it.calcArea() }
     }
 
-    fun getTotalPerimeter() : Double {
+    fun getTotalPerimeter() : Double? {
         if(shapes.isEmpty()){
-            throw NoSuchElementException("Our class is empty")
+            return null
         }
         return shapes.sumByDouble { it.calcPerimeter() }
     }
