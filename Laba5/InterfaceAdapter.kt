@@ -1,6 +1,7 @@
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
+import kotlin.jvm.Throws
 
 class InterfaceAdapter: JsonSerializer<Shape>, JsonDeserializer<Shape> {
     companion object {
