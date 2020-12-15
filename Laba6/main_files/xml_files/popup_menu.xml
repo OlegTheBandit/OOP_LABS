@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/triangle"
+        android:title="Add triangle"></item>
+    <item android:id="@+id/rectangle"
+        android:title="Add rectangle"></item>
+    <item android:id="@+id/circle"
+        android:title="Add circle"></item>
+    <item android:id="@+id/square"
+        android:title="Add square"></item>
+</menu>
